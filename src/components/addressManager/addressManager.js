@@ -21,11 +21,15 @@ export default class AddressManager extends Component {
         let addresses = this.getAddresses();
         return (
             <div>
-                <TableAddresses addresses={addresses} ref={(table) => { this.tableAddresses = table; }} onEdit={(key, address) => { this.editAddress(key, address); }}/>
-                <div>
-                    <Button bsStyle="primary" onClick={() => { this.addAddress(); }}>Add new Address</Button>
-                    <Button bsStyle="primary" onClick={() => { this.openMap(); }}>Add new Address using GMaps</Button>
+                <div className="page-header">
+                    <h1>Addresses List</h1>
+                    <div>
+                        <Button bsStyle="primary" onClick={() => { this.addAddress(); }}>Add new Address</Button>
+                        <Button bsStyle="primary" onClick={() => { this.openMap(); }}>Add new Address using GMaps</Button>
+                    </div>
                 </div>
+
+                <TableAddresses addresses={addresses} ref={(table) => { this.tableAddresses = table; }} onEdit={(key, address) => { this.editAddress(key, address); }}/>
                 <FormAdd ref={(formAdd) => { this.formAdd = formAdd; }} onSubmit={(key, address) => { this.submitFormAddress(key, address); }} />
                 <MapAdd ref={(map) => { this.mapAdd = map; }} onSubmit={(address) => { this.saveMapAddress(address); }} />
             </div>

@@ -37,10 +37,6 @@ export default class TableAddresses extends Component {
     render() {
         return (
             <div>
-                <h1>Addresses List</h1>
-                <div>
-                    <CSVLink data={this.state.addresses} className="btn btn-success">Download CSV <span className="glyphicon glyphicon-save" /></CSVLink>
-                </div>
                 <table className="table table-responsive table-hover table-bordered table-striped">
                     <thead>
                         <tr>
@@ -71,10 +67,14 @@ export default class TableAddresses extends Component {
                         })
                     }
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colSpan={6}>
+                                <CSVLink data={this.state.addresses} className="btn btn-success">Download CSV <span className="glyphicon glyphicon-save" /></CSVLink>
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
-                <div>
-                    <CSVLink data={this.state.addresses} className="btn btn-success">Download CSV <span className="glyphicon glyphicon-save" /></CSVLink>
-                </div>
             </div>
         );
     }
