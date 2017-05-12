@@ -13,19 +13,15 @@ module.exports = {
             test: /\.js?$/,
             exclude: /node_modules/,
             loader: 'react-hot!babel'
-        }],
-        rules: [
-            {
-                test: /\.js$/, // include .js files
-                enforce: "pre", // preload the jshint loader
-                exclude: /node_modules/, // exclude any and all files in the node_modules folder
-                use: [
-                    {
-                        loader: "jshint-loader"
-                    }
-                ]
-            }
-        ]
+        }, {
+            test: /\.js$/, // include .js files
+            enforce: "pre", // preload the jshint loader
+            exclude: /node_modules/, // exclude any and all files in the node_modules folder
+            loader: "jsxhint-loader"
+        }, {
+            test: /\.css$/,
+            loaders: [ 'style-loader', 'css-loader' ]
+        }]
     },
 
     output: {
@@ -54,15 +50,14 @@ module.exports = {
 
         // jshint errors are displayed by default as warnings
         // set emitErrors to true to display them as errors
-        emitErrors: false,
+        emitErrors: true,
 
         // jshint to not interrupt the compilation
         // if you want any file with jshint errors to fail
         // set failOnHint to true
         failOnHint: false,
-
-        // custom reporter function
-        reporter: function (errors) {
-        }
+        eqeqeq: true,
+        curly: true,
+        esversion: 6
     }
 };
