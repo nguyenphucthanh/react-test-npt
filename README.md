@@ -11,5 +11,5 @@ webpack.config by @codeaholicguy
 - add new address using Google AutoComplete / pick place on Google Map / current Location
 - edit address
 - delete address
-- export to CVS using blob
+- export CSV
 - css framework: Bootstrap and React-bootstrap
