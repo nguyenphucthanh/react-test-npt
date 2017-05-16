@@ -29,9 +29,12 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "firebase": "^3.9.0",
+    "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
     "react-csv": "^1.0.8",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "uuid": "^3.0.1"
   }
 }

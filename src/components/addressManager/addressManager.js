@@ -18,7 +18,6 @@ export default class AddressManager extends Component {
     }
 
     render() {
-        let addresses = this.getAddresses();
         return (
             <div>
                 <div className="page-header">
@@ -29,7 +28,8 @@ export default class AddressManager extends Component {
                     </div>
                 </div>
 
-                <TableAddresses addresses={addresses} ref={(table) => { this.tableAddresses = table; }} onEdit={(key, address) => { this.editAddress(key, address); }}/>
+                <TableAddresses ref={(table) => { this.tableAddresses = table; }}
+                                onEdit={(key, address) => { this.editAddress(key, address); }}/>
                 <FormAdd ref={(formAdd) => { this.formAdd = formAdd; }} onSubmit={(key, address) => { this.submitFormAddress(key, address); }} />
                 <MapAdd ref={(map) => { this.mapAdd = map; }} onSubmit={(address) => { this.saveMapAddress(address); }} />
             </div>
@@ -37,18 +37,11 @@ export default class AddressManager extends Component {
     }
 
     /**
-     * get all addresses from local storage
-     */
-    getAddresses() {
-        return AddressHelper.getAllAddresses();
-    }
-
-    /**
      * show popup to add new address
      */
     addAddress() {
-        let newAddress = new AddressModel('', '', '', '', '', '');
-        this.formAdd.setAddress(-1, newAddress);
+        let newAddress = new AddressModel();
+        this.formAdd.setAddress('', newAddress);
         this.formAdd.show();
     }
 
@@ -66,12 +59,15 @@ export default class AddressManager extends Component {
      * submit address data to local storage
      */
     submitFormAddress(key, address) {
-        if (key < 0) {
-            AddressHelper.addAddress(address);
+        if (key === '') {
+            AddressHelper.addAddress(address).then(() => {
+                this.tableAddresses.refresh();
+            });
         } else {
-            AddressHelper.updateAddress(key, address);
+            AddressHelper.updateAddress(key, address).then(() => {
+                this.tableAddresses.refresh();
+            });
         }
-        this.tableAddresses.refresh();
     }
 
     /**
@@ -86,7 +82,8 @@ export default class AddressManager extends Component {
      * @param addr
      */
     saveMapAddress(addr) {
-        AddressHelper.addAddress(addr);
-        this.tableAddresses.refresh();
+        AddressHelper.addAddress(addr).then(() => {
+            this.tableAddresses.refresh();
+        });
     }
 }

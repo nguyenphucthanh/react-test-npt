@@ -1,6 +1,8 @@
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+console.log('========', __dirname);
+
 module.exports = {
     entry: [
         'webpack-dev-server/client?http://localhost:8080',
@@ -25,13 +27,13 @@ module.exports = {
     },
 
     output: {
-        path: __dirname + '/build',
+        path: __dirname + '/public',
         publicPath: '/',
         filename: 'app.js'
     },
 
     devServer: {
-        contentBase: './build',
+        contentBase: __dirname + '/public',
         hot: true
     },
 

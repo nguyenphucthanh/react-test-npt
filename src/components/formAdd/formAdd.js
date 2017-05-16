@@ -17,7 +17,7 @@ export default class FormAdd extends Component {
         this.state = {
             showModal: false,
             addressKey: -1,
-            address: new AddressModel('', '', '', '', '', '')
+            address: new AddressModel('', '', '', '', '', '', '')
         };
     }
 
@@ -88,7 +88,8 @@ export default class FormAdd extends Component {
                     <Modal.Title>Add address</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <form className="form-horizontal" id="form-address" name="form-address" onSubmit={() => { this.submit(); }}>
+                    <form className="form-horizontal" id="form-address" name="form-address" onSubmit={(e) => { e.preventDefault(); this.submit(); }}>
+                        <input type="hidden" value={this.state.address.id}/>
                         <FormGroup controlId="streetNumber" validationState={this.getValidationState('streetNumber')}>
                             <ControlLabel className="col-sm-3">Street Address</ControlLabel>
                             <div className="col-sm-9">

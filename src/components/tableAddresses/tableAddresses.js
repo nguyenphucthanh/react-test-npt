@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import Button from 'react-bootstrap/lib/Button';
 import AddressHelper from '../addressManager/addressHelper';
 import {CSVLink, CSVDownload} from 'react-csv';
+import * as _ from 'lodash';
 
 /**
  * Addresses Table Component
@@ -11,7 +12,7 @@ export default class TableAddresses extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            addresses: this.props.addresses
+            addresses: []
         };
     }
 
@@ -19,8 +20,14 @@ export default class TableAddresses extends Component {
      * trigger to refresh table
      */
     refresh() {
-        this.setState({
-            addresses: AddressHelper.getAllAddresses()
+        AddressHelper.getAllAddresses().then((result) => {
+            let addresses = [];
+            for (let key in result) {
+                addresses.push(result[key]);
+            }
+            this.setState({
+                addresses: addresses
+            });
         });
     }
 
@@ -29,9 +36,14 @@ export default class TableAddresses extends Component {
      */
     deleteAddress(key) {
         if (confirm('Do you really want to delete this address?')) {
-            AddressHelper.deleteAddress(key);
-            this.refresh();
+            AddressHelper.deleteAddress(key).then(() => {
+                this.refresh();
+            });
         }
+    }
+
+    componentDidMount() {
+        this.refresh();
     }
 
     render() {
@@ -52,15 +64,15 @@ export default class TableAddresses extends Component {
                     {
                         this.state.addresses.map((address, key) => {
                             return(
-                                <tr key={key}>
+                                <tr key={address.id}>
                                     <td>{address.streetNumber}, {address.route}</td>
                                     <td>{address.state}</td>
                                     <td>{address.city}</td>
                                     <td>{address.postal}</td>
                                     <td>{address.country}</td>
                                     <td>
-                                        <Button bsStyle="info" onClick={() => { this.props.onEdit(key, address); }}><span className="glyphicon glyphicon-pencil" /></Button>
-                                        <Button bsStyle="danger" onClick={() => { this.deleteAddress(key); }}><span className="glyphicon glyphicon-trash" /></Button>
+                                        <Button bsStyle="info" onClick={() => { this.props.onEdit(address.id, address); }}><span className="glyphicon glyphicon-pencil" /></Button>
+                                        <Button bsStyle="danger" onClick={() => { this.deleteAddress(address.id); }}><span className="glyphicon glyphicon-trash" /></Button>
                                     </td>
                                 </tr>
                             );

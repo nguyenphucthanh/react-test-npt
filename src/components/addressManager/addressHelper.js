@@ -1,61 +1,61 @@
 import AddressModel from '../../models/address';
+import * as firebase from 'firebase';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCUNspIj3hbsIr6Izakhlpq3KSUf2pBLE4",
+    authDomain: "react-test-addrman.firebaseapp.com",
+    databaseURL: "https://react-test-addrman.firebaseio.com",
+    projectId: "react-test-addrman",
+    storageBucket: "react-test-addrman.appspot.com",
+    messagingSenderId: "1025583236501"
+};
 
 export default class AddressHelper {
+    constructor() {
+        this.defaultDatabase = {};
+    }
     /**
      * Initialize some default addresses
      * @type {[*]}
      */
     static initDefaultDB() {
-        let initialAddress = [
-            new AddressModel('194', 'Đinh Bộ Lĩnh', 'HCM', 'HCM', '', 'Vietnam'),
-            new AddressModel('204', 'Bạch Đằng', 'HCM', 'HCM', '', 'Vietnam')
-        ];
+        firebase.initializeApp(firebaseConfig);
+        firebase.auth().signInAnonymously().catch(function(error) {
+            console.error(error);
+        });
 
-        let storedAddress = window.localStorage.getItem('REACT_TEST_ADDRESSES');
-
-        if (!storedAddress) {
-            window.localStorage.setItem('REACT_TEST_ADDRESSES', JSON.stringify(initialAddress));
-        }
+        this.defaultDatabase = firebase.database();
     }
 
     /**
-     * get all addresses from local storage
+     * get all addresses from database
      */
     static getAllAddresses() {
-        return JSON.parse(window.localStorage.getItem('REACT_TEST_ADDRESSES'));
+        return new Promise((resolve, reject) => {
+            this.defaultDatabase.ref('addresses/').once('value').then((snapshot) => {
+                resolve(snapshot.val());
+            }).catch((error) => {
+                reject(error);
+            });
+        });
     }
 
     /**
-     * save array of addresses to local storage
-     * @param allAddresses
-     */
-    static saveAllAddress(allAddresses) {
-        window.localStorage.setItem('REACT_TEST_ADDRESSES', JSON.stringify(allAddresses));
-    }
-
-    /**
-     * add an address to local storage
+     * add an address to database
      * @param newAddress
      */
     static addAddress(newAddress) {
-        let allAddresses = this.getAllAddresses();
-        if (!allAddresses) {
-            allAddresses = [];
-        }
-        allAddresses.push(newAddress);
-
-        this.saveAllAddress(allAddresses);
+        let addressRef = this.defaultDatabase.ref('addresses').push();
+        newAddress.id = addressRef.key;
+        return addressRef.set(newAddress);
     }
 
     /**
-     * delete an address from local storage
+     * delete an address from database
      * @param key
      */
     static deleteAddress(key) {
-        let addresses = this.getAllAddresses();
-        addresses.splice(key, 1);
-
-        this.saveAllAddress(addresses);
+        return this.defaultDatabase.ref('addresses/' + key).remove();
     }
 
     /**
@@ -64,9 +64,9 @@ export default class AddressHelper {
      * @param address
      */
     static updateAddress(key, address) {
-        let addresses = this.getAllAddresses();
-        addresses[key] = address;
+        let update = {};
+        update['addresses/' + key] = address;
 
-        this.saveAllAddress(addresses);
+        return this.defaultDatabase.ref().update(update);
     }
 }

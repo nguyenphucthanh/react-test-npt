@@ -125,7 +125,7 @@ export default class MapAdd extends Component {
             country: 'country',
             'postal_code': 'postal'
         };
-        let addr = new AddressModel('', '', '', '', '', '');
+        let addr = new AddressModel('', '', '', '', '', '', '');
 
         /* jshint ignore:start */
         for (let i = 0; i < place['address_components'].length; i++) {
