@@ -3,32 +3,15 @@ import Button from 'react-bootstrap/lib/Button';
 import AddressHelper from '../addressManager/addressHelper';
 import {CSVLink, CSVDownload} from 'react-csv';
 import * as _ from 'lodash';
+import {connect} from 'react-redux';
 
 /**
  * Addresses Table Component
  * List addresses with edit button
  */
-export default class TableAddresses extends Component {
+class TableAddressesComponent extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            addresses: []
-        };
-    }
-
-    /**
-     * trigger to refresh table
-     */
-    refresh() {
-        AddressHelper.getAllAddresses().then((result) => {
-            let addresses = [];
-            for (let key in result) {
-                addresses.push(result[key]);
-            }
-            this.setState({
-                addresses: addresses
-            });
-        });
     }
 
     /**
@@ -37,13 +20,12 @@ export default class TableAddresses extends Component {
     deleteAddress(key) {
         if (confirm('Do you really want to delete this address?')) {
             AddressHelper.deleteAddress(key).then(() => {
-                this.refresh();
+                // this.refresh();
             });
         }
     }
 
     componentDidMount() {
-        this.refresh();
     }
 
     render() {
@@ -62,7 +44,7 @@ export default class TableAddresses extends Component {
                     </thead>
                     <tbody>
                     {
-                        this.state.addresses.map((address, key) => {
+                        this.props.addresses.map((address, key) => {
                             return(
                                 <tr key={address.id}>
                                     <td>{address.streetNumber}, {address.route}</td>
@@ -82,7 +64,7 @@ export default class TableAddresses extends Component {
                     <tfoot>
                         <tr>
                             <td colSpan={6}>
-                                <CSVLink data={this.state.addresses} className="btn btn-success">Download CSV <span className="glyphicon glyphicon-save" /></CSVLink>
+                                <CSVLink data={this.props.addresses} className="btn btn-success">Download CSV <span className="glyphicon glyphicon-save" /></CSVLink>
                             </td>
                         </tr>
                     </tfoot>
@@ -91,3 +73,17 @@ export default class TableAddresses extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        addresses: state.addresses
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {};
+};
+
+const TableAddresses = connect(mapStateToProps, mapDispatchToProps)(TableAddressesComponent);
+
+export default TableAddresses;
