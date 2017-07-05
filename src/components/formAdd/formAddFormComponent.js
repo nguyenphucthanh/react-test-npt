@@ -6,6 +6,7 @@ import FormControl from "react-bootstrap/lib/FormControl";
 import ControlLabel from "react-bootstrap/lib/ControlLabel";
 import { Field, reduxForm } from "redux-form";
 import FieldFormControl from "./fieldFormComponent";
+import { connect } from 'react-redux';
 
 let FormAddFormComponent = props => {
   let { handleSubmit, address } = props;
@@ -17,7 +18,7 @@ let FormAddFormComponent = props => {
       name="form-address"
       onSubmit={handleSubmit}
     >
-      <Field component="input" type="hidden" name="id" value={address.id} />
+      <Field component="input" type="hidden" name="id" />
       <Field
         name="streetNumber"
         component={FieldFormControl}
@@ -78,5 +79,13 @@ let FormAddFormComponent = props => {
 FormAddFormComponent = new reduxForm({
   form: "form-address"
 })(FormAddFormComponent);
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    initialValues: state.formAdd.address
+  };
+};
+
+FormAddFormComponent = connect(mapStateToProps)(FormAddFormComponent);
 
 export default FormAddFormComponent;

@@ -20,7 +20,7 @@ const formAdd = (state, action) => {
             };
         default:
             return state || {
-                id: -1,
+                id: 0,
                 address: null,
                 showModal: false
             };

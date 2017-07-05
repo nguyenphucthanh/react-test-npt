@@ -20,7 +20,7 @@ export const NEW_ADDRESS_FORM = 'NEW_ADDRESS_FORM';
 export function newAddressForm() {
     return {
         type: NEW_ADDRESS_FORM,
-        id: -1,
+        id: 0,
         address: new AddressModel('', '', '', '', '', '', '')
     };
 }
