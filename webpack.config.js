@@ -5,6 +5,7 @@ console.log('========', __dirname);
 
 module.exports = {
     entry: [
+        'react-hot-loader/patch',
         'webpack-dev-server/client?http://localhost:8080',
         'webpack/hot/only-dev-server',
         './src/index.js'
@@ -14,7 +15,7 @@ module.exports = {
         loaders: [{
             test: /\.js?$/,
             exclude: /node_modules/,
-            loader: 'react-hot!babel'
+            loaders: ['react-hot-loader/webpack', 'babel']
         }, {
             test: /\.js$/, // include .js files
             enforce: "pre", // preload the jshint loader

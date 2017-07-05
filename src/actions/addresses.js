@@ -1,6 +1,7 @@
 import AddressHelper from '../components/addressManager/addressHelper';
 
 export const RECEIVE_ADDRESSES = 'RECEIVE_ADDRESS';
+
 function receiveAddresses(addressesList) {
     return {
         type: RECEIVE_ADDRESSES,
@@ -15,3 +16,39 @@ export function getAddressFromFirebase() {
         });
     };
 }
+
+export const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
+
+function updateAddress(id, address) {
+    return {
+        type: UPDATE_ADDRESS,
+        id,
+        address
+    };
+}
+
+export function updateAddressToFireBase(id, address) {
+    return (dispatch) => {
+        AddressHelper.updateAddress(id, address).then(() => {
+            dispatch(updateAddress(id, address));
+        });
+    };
+}
+
+export const INSERT_ADDRESS = 'INSERT_ADDRESS';
+
+function insertAddress(address) {
+    return {
+        type: INSERT_ADDRESS,
+        address
+    };
+}
+
+export function insertAddressToFirebase(address) {
+    return (dispatch) => {
+        AddressHelper.addAddress(address).then(() => {
+            dispatch(insertAddress(address));
+        });
+    };
+}
+
