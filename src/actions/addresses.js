@@ -46,9 +46,26 @@ function insertAddress(address) {
 
 export function insertAddressToFirebase(address) {
     return (dispatch) => {
-        AddressHelper.addAddress(address).then(() => {
+        AddressHelper.addAddress(address).then((result) => {
+            console.log('insertAddressToFirebase', result);
             dispatch(insertAddress(address));
         });
     };
 }
 
+export const DELETE_ADDRESS = 'DELETE_ADDRESS';
+
+function deleteAddress(address) {
+    return {
+        type: DELETE_ADDRESS,
+        address
+    };
+}
+
+export function deleteAddressFromFirebase(address) {
+    return (dispatch) => {
+        AddressHelper.deleteAddress(address.id).then(() => {
+            dispatch(deleteAddress(address));
+        });
+    };
+}

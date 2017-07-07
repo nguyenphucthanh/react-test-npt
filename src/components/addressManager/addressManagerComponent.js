@@ -25,7 +25,7 @@ export default class AddressManagerComponent extends Component {
                     <h1>Addresses List</h1>
                     <div>
                         <Button bsStyle="primary" onClick={() => { this.props.onClickNew(); }}>Add new Address</Button>
-                        <Button bsStyle="primary" onClick={() => { this.openMap(); }}>Add new Address using GMaps</Button>
+                        <Button bsStyle="primary" onClick={() => { this.props.onClickOpenMap(); }}>Add new Address using GMaps</Button>
                     </div>
                 </div>
 
@@ -34,13 +34,6 @@ export default class AddressManagerComponent extends Component {
                 <MapAdd ref={(map) => { this.mapAdd = map; }} onSubmit={(address) => { this.saveMapAddress(address); }} />
             </div>
         );
-    }
-
-    /**
-     * Open Map
-     */
-    openMap() {
-        this.mapAdd.show();
     }
 
     /**

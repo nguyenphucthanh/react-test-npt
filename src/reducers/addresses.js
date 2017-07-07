@@ -1,4 +1,4 @@
-import {RECEIVE_ADDRESSES, UPDATE_ADDRESS, INSERT_ADDRESS} from '../actions/addresses';
+import {RECEIVE_ADDRESSES, UPDATE_ADDRESS, INSERT_ADDRESS, DELETE_ADDRESS} from '../actions/addresses';
 const addresses = (state, action) => {
     switch (action.type) {
         case RECEIVE_ADDRESSES:
@@ -7,6 +7,22 @@ const addresses = (state, action) => {
                 addressesArray.push(action.addresses[key]);
             }
             return addressesArray;
+        case DELETE_ADDRESS:
+            return state.filter(address => address.id !== action.address.id);
+        case UPDATE_ADDRESS:
+            return state.map(address => {
+                let newAddress = {};
+                Object.assign(newAddress, address);
+                if (address.id === action.id) {
+                    Object.assign(newAddress, action.address);
+                }
+                return newAddress;
+            });
+        case INSERT_ADDRESS:
+            return [
+                action.address,
+                ...state
+            ];
         default:
             return state || [];
     }

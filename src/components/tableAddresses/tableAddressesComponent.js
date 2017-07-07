@@ -50,7 +50,7 @@ export default class TableAddressesComponent extends Component {
                                     <td>{address.country}</td>
                                     <td>
                                         <Button bsStyle="info" onClick={() => { this.props.onClickEdit(address.id, address); }}><span className="glyphicon glyphicon-pencil" /></Button>
-                                        <Button bsStyle="danger" onClick={() => { this.deleteAddress(address.id); }}><span className="glyphicon glyphicon-trash" /></Button>
+                                        <Button bsStyle="danger" onClick={() => { this.props.onClickDelete(address); }}><span className="glyphicon glyphicon-trash" /></Button>
                                     </td>
                                 </tr>
                             );
